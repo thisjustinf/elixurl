@@ -6,18 +6,18 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :elixurl, Elixurl.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "elixurl_test#{System.get_env("MIX_TEST_PARTITION")}",
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASSWORD"),
+  hostname: System.get_env("POSTGRES_HOST"),
+  database: "#{System.get_env("POSTGRES_DB")}#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :elixurl, ElixurlWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "Ts+ltmgOeVRBWbgQ0W+PM/Xvk6Et1K02CbtWNulE7SPfSx2TplgvvoSyz1FGDDWI",
+  http: [ip: {0, 0, 0, 0}, port: 4002],
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   server: false
 
 # In test we don't send emails
