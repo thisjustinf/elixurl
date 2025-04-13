@@ -1,0 +1,37 @@
+name: elixurl
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      MIX_ENV: dev
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    container_name: elixurl_web_${ENVIRONMENT}
+    env_file: .env.${ENVIRONMENT}
+    ports:
+      - 4000:4000
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/web
+
+  db:
+    image: postgres:17-alpine
+    container_name: elixurl_db_${ENVIRONMENT}
+    env_file: .env.${ENVIRONMENT}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - .:/docker-entrypoint-initdb.d/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

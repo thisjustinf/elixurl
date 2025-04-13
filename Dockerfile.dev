@@ -1,0 +1,31 @@
+FROM elixir:1.18.3-otp-27-slim
+
+ENV ENVIRONMENT dev
+ENV MIX_ENV dev
+
+WORKDIR /app
+
+# Update the package repository and install CA certificates
+RUN apt-get update && apt-get install -y ca-certificates \
+    build-essential git inotify-tools && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+RUN mix local.hex --force
+COPY mix.exs mix.lock ./
+RUN mix deps.get
+RUN mix deps.compile
+
+COPY . .
+
+RUN MIX_ENV=dev mix phx.digest && mix phx.digest --no-webpack
+
+
+# Copy the docker-entrypoint.sh and set it as executable.
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 4000
+
+# Set the entrypoint script.
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["mix", "phx.server"]

@@ -1,0 +1,4 @@
+.git
+_build
+node_modules
+.env.*
