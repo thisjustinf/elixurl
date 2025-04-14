@@ -49,18 +49,18 @@ defmodule Elixurl.AuthFixtures do
     user
   end
 
-  def user_fixture(attrs \\ %{}) do
-    user = unconfirmed_user_fixture(attrs)
+  # def user_fixture(attrs \\ %{}) do
+  #   user = unconfirmed_user_fixture(attrs)
 
-    token =
-      extract_user_token(fn url ->
-        Auth.deliver_login_instructions(user, url)
-      end)
+  #   token =
+  #     extract_user_token(fn url ->
+  #       Auth.deliver_login_instructions(user, url)
+  #     end)
 
-    {:ok, user, _expired_tokens} = Auth.login_user_by_magic_link(token)
+  #   {:ok, user, _expired_tokens} = Auth.login_user_by_magic_link(token)
 
-    user
-  end
+  #   user
+  # end
 
   def user_scope_fixture do
     user = user_fixture()

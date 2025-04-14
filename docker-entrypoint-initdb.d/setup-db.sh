@@ -1,13 +1,9 @@
 #!/bin/bash
 set -e
 
-source "/app/.env.$ENVIRONMENT"
+source "/app/env/.env.$ENVIRONMENT"
 
 echo "Current ENVIRONMENT: $ENVIRONMENT"
-
-echo "POSTGRES_USER: $POSTGRES_USER"
-echo "POSTGRES_PASSWORD: $POSTGRES_PASSWORD"
-echo "POSTGRES_DB: $POSTGRES_DB"
 
 # Ensure the PostgreSQL database is running
 wait_for_postgres() {

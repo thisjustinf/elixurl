@@ -4,12 +4,12 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: docker/Dockerfile.${ENVIRONMENT}
     environment:
-      MIX_ENV: dev
+      MIX_ENV: ${ENVIRONMENT}
       POSTGRES_HOST: ${POSTGRES_HOST}
     container_name: elixurl_web_${ENVIRONMENT}
-    env_file: .env.${ENVIRONMENT}
+    env_file: env/.env.${ENVIRONMENT}
     ports:
       - 4000:4000
     depends_on:
@@ -21,7 +21,7 @@ services:
   db:
     image: postgres:17-alpine
     container_name: elixurl_db_${ENVIRONMENT}
-    env_file: .env.${ENVIRONMENT}
+    env_file: env/.env.${ENVIRONMENT}
     ports:
       - 5432:5432
     volumes:

@@ -7,9 +7,9 @@ set -e
 ENVIRONMENT=${ENVIRONMENT:=dev}
 
 # Source the environment file. Adjust the path if needed.
-if [ -f "/app/.env.$ENVIRONMENT" ]; then
-    echo "Loading environment variables from /app/.env.$ENVIRONMENT"
-    . /app/.env.${ENVIRONMENT}
+if [ -f "/app/env/.env.$ENVIRONMENT" ]; then
+    echo "Loading environment variables from /app/env/.env.$ENVIRONMENT"
+    . /app/env/.env.${ENVIRONMENT}
 fi
 
 # Optional: If your container is started with command line flags (i.e. if first argument starts with a '-'),
