@@ -8,6 +8,19 @@
 import Config
 
 config :elixurl, :scopes,
+  elixurl_auth_user: [
+    default: false,
+    module: Elixurl.Auth.Scope,
+    assign_key: :current_scope,
+    access_path: [:user, :id],
+    schema_key: :user_id,
+    schema_type: :binary_id,
+    schema_table: :users,
+    test_data_fixture: Elixurl.AuthFixtures,
+    test_login_helper: :register_and_log_in_user
+  ]
+
+config :elixurl, :scopes,
   auth_user: [
     default: false,
     module: Elixurl.Auth.Scope,
@@ -35,11 +48,7 @@ config :elixurl, :scopes,
 
 config :elixurl,
   ecto_repos: [Elixurl.Repo],
-  generators: [
-    timestamp_type: :utc_datetime,
-    migration_primary_key: [type: :binary_id],
-    migration_foreign_key: [type: :binary_id]
-  ]
+  generators: [ timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
 config :elixurl, ElixurlWeb.Endpoint,
